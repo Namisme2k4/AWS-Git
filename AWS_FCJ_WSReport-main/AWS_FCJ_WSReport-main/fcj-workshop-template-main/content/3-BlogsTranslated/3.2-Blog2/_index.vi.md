@@ -1,127 +1,157 @@
 ---
 title: "Blog 2"
-date: "2025-09-09"
+date: "2025-09-12"
 weight: 1
 chapter: false
 pre: " <b> 3.2. </b> "
 ---
 
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
+# Tối Ưu Hóa Thu Thập Metrics với Amazon Managed Service for Prometheus
 
-# Bắt đầu với healthcare data lakes: Sử dụng microservices
+## Tổng quan
 
-Các data lake có thể giúp các bệnh viện và cơ sở y tế chuyển dữ liệu thành những thông tin chi tiết về doanh nghiệp và duy trì hoạt động kinh doanh liên tục, đồng thời bảo vệ quyền riêng tư của bệnh nhân. **Data lake** là một kho lưu trữ tập trung, được quản lý và bảo mật để lưu trữ tất cả dữ liệu của bạn, cả ở dạng ban đầu và đã xử lý để phân tích. data lake cho phép bạn chia nhỏ các kho chứa dữ liệu và kết hợp các loại phân tích khác nhau để có được thông tin chi tiết và đưa ra các quyết định kinh doanh tốt hơn.
+Khi các tổ chức mở rộng hệ thống quan sát (observability), việc xử lý metrics một cách hiệu quả trở nên then chốt cho độ tin cậy, hiệu suất và tối ưu chi phí. Bài viết này giới thiệu cách **Amazon Managed Service for Prometheus (AMP)** giúp doanh nghiệp tối ưu hóa pipeline ingestion, giám sát quota và bảo vệ workload thông qua giới hạn số chuỗi theo nhãn (label-based active series limits).
 
-Bài đăng trên blog này là một phần của loạt bài lớn hơn về việc bắt đầu cài đặt data lake dành cho lĩnh vực y tế. Trong bài đăng blog cuối cùng của tôi trong loạt bài, *“Bắt đầu với data lake dành cho lĩnh vực y tế: Đào sâu vào Amazon Cognito”*, tôi tập trung vào các chi tiết cụ thể của việc sử dụng Amazon Cognito và Attribute Based Access Control (ABAC) để xác thực và ủy quyền người dùng trong giải pháp data lake y tế. Trong blog này, tôi trình bày chi tiết cách giải pháp đã phát triển ở cấp độ cơ bản, bao gồm các quyết định thiết kế mà tôi đã đưa ra và các tính năng bổ sung được sử dụng. Bạn có thể truy cập các code samples cho giải pháp tại Git repo này để tham khảo.
-
----
-
-## Hướng dẫn kiến trúc
-
-Thay đổi chính kể từ lần trình bày cuối cùng của kiến trúc tổng thể là việc tách dịch vụ đơn lẻ thành một tập hợp các dịch vụ nhỏ để cải thiện khả năng bảo trì và tính linh hoạt. Việc tích hợp một lượng lớn dữ liệu y tế khác nhau thường yêu cầu các trình kết nối chuyên biệt cho từng định dạng; bằng cách giữ chúng được đóng gói riêng biệt với microservices, chúng ta có thể thêm, xóa và sửa đổi từng trình kết nối mà không ảnh hưởng đến những kết nối khác. Các microservices được kết nối rời thông qua tin nhắn publish/subscribe tập trung trong cái mà tôi gọi là “pub/sub hub”.
-
-Giải pháp này đại diện cho những gì tôi sẽ coi là một lần lặp nước rút hợp lý khác từ last post của tôi. Phạm vi vẫn được giới hạn trong việc nhập và phân tích cú pháp đơn giản của các **HL7v2 messages** được định dạng theo **Quy tắc mã hóa 7 (ER7)** thông qua giao diện REST.
-
-**Kiến trúc giải pháp bây giờ như sau:**
-
-> *Hình 1. Kiến trúc tổng thể; những ô màu thể hiện những dịch vụ riêng biệt.*
+![Kiến trúc AMP Metrics Optimization](/images/AMP.png)  
+_Hình 1: Quan sát tập trung với Amazon Managed Service for Prometheus và kiểm soát ingestion dựa trên nhãn._
 
 ---
 
-Mặc dù thuật ngữ *microservices* có một số sự mơ hồ cố hữu, một số đặc điểm là chung:  
-- Chúng nhỏ, tự chủ, kết hợp rời rạc  
-- Có thể tái sử dụng, giao tiếp thông qua giao diện được xác định rõ  
-- Chuyên biệt để giải quyết một việc  
-- Thường được triển khai trong **event-driven architecture**
+## Bối cảnh và Thách thức
 
-Khi xác định vị trí tạo ranh giới giữa các microservices, cần cân nhắc:  
-- **Nội tại**: công nghệ được sử dụng, hiệu suất, độ tin cậy, khả năng mở rộng  
-- **Bên ngoài**: chức năng phụ thuộc, tần suất thay đổi, khả năng tái sử dụng  
-- **Con người**: quyền sở hữu nhóm, quản lý *cognitive load*
+### Thực trạng hiện tại
 
----
+- Các doanh nghiệp hiện đại vận hành nhiều workload trên nhiều tài khoản AWS và khu vực khác nhau.
+- Khối lượng metrics ingestion có thể tăng lên hàng triệu chuỗi thời gian đang hoạt động.
+- Nếu không kiểm soát, “noisy neighbors” có thể làm giảm hiệu suất và tăng chi phí.
 
-## Lựa chọn công nghệ và phạm vi giao tiếp
+### Thách thức chính
 
-| Phạm vi giao tiếp                        | Các công nghệ / mô hình cần xem xét                                                        |
-| ---------------------------------------- | ------------------------------------------------------------------------------------------ |
-| Trong một microservice                   | Amazon Simple Queue Service (Amazon SQS), AWS Step Functions                               |
-| Giữa các microservices trong một dịch vụ | AWS CloudFormation cross-stack references, Amazon Simple Notification Service (Amazon SNS) |
-| Giữa các dịch vụ                         | Amazon EventBridge, AWS Cloud Map, Amazon API Gateway                                      |
+- Tập trung hóa metrics ingestion ở quy mô lớn.
+- Giám sát quota ingestion một cách hiệu quả.
+- Bảo vệ workload quan trọng khỏi các agent bị cấu hình sai hoặc đột biến dữ liệu.
+- Cân bằng giữa tính linh hoạt và khả năng dự đoán chi phí.
 
 ---
 
-## The pub/sub hub
+## Nguyên tắc của AWS để Tối Ưu Hóa Ingestion
 
-Việc sử dụng kiến trúc **hub-and-spoke** (hay message broker) hoạt động tốt với một số lượng nhỏ các microservices liên quan chặt chẽ.  
-- Mỗi microservice chỉ phụ thuộc vào *hub*  
-- Kết nối giữa các microservice chỉ giới hạn ở nội dung của message được xuất  
-- Giảm số lượng synchronous calls vì pub/sub là *push* không đồng bộ một chiều
+### Nguyên tắc 1: Quan sát tập trung
 
-Nhược điểm: cần **phối hợp và giám sát** để tránh microservice xử lý nhầm message.
+**Triết lý cốt lõi:**
 
----
+- Việc tập trung hóa metrics từ nhiều tài khoản mang lại mặt phẳng quan sát thống nhất.
+- Managed collectors và IAM roles cross-account đơn giản hóa pipeline ingestion.
 
-## Core microservice
+**Giải pháp:**
 
-Cung cấp dữ liệu nền tảng và lớp truyền thông, gồm:  
-- **Amazon S3** bucket cho dữ liệu  
-- **Amazon DynamoDB** cho danh mục dữ liệu  
-- **AWS Lambda** để ghi message vào data lake và danh mục  
-- **Amazon SNS** topic làm *hub*  
-- **Amazon S3** bucket cho artifacts như mã Lambda
-
-> Chỉ cho phép truy cập ghi gián tiếp vào data lake qua hàm Lambda → đảm bảo nhất quán.
+- AMP workspaces đóng vai trò là endpoint tập trung cho việc scrape và lưu trữ metrics.
+- Cross-account ingestion với IAM roles đảm bảo bảo mật và khả năng mở rộng.
 
 ---
 
-## Front door microservice
+### Nguyên tắc 2: Giám sát Quota và Mức sử dụng
 
-- Cung cấp API Gateway để tương tác REST bên ngoài  
-- Xác thực & ủy quyền dựa trên **OIDC** thông qua **Amazon Cognito**  
-- Cơ chế *deduplication* tự quản lý bằng DynamoDB thay vì SNS FIFO vì:
-  1. SNS deduplication TTL chỉ 5 phút
-  2. SNS FIFO yêu cầu SQS FIFO
-  3. Chủ động báo cho sender biết message là bản sao
+**Nền tảng:**
 
----
+- AMP định nghĩa quota cho tốc độ ingestion, số chuỗi đang hoạt động và độ đồng thời của truy vấn.
+- CloudWatch cung cấp metrics chi tiết về mức sử dụng.
 
-## Staging ER7 microservice
+**Metrics chính:**
 
-- Lambda “trigger” đăng ký với pub/sub hub, lọc message theo attribute  
-- Step Functions Express Workflow để chuyển ER7 → JSON  
-- Hai Lambda:
-  1. Sửa format ER7 (newline, carriage return)
-  2. Parsing logic  
-- Kết quả hoặc lỗi được đẩy lại vào pub/sub hub
+- `IngestionRate`: số mẫu mỗi giây.
+- `ActiveSeries`: số chuỗi thời gian đang hoạt động.
+- `DiscardedSamples`: số mẫu bị loại bỏ.
+- Metrics cho rule evaluation và query TPS để tăng khả năng quan sát.
 
 ---
 
-## Tính năng mới trong giải pháp
+### Nguyên tắc 3: Kiểm soát bằng Giới hạn Chuỗi Theo Nhãn
 
-### 1. AWS CloudFormation cross-stack references
-Ví dụ *outputs* trong core microservice:
-```yaml
-Outputs:
-  Bucket:
-    Value: !Ref Bucket
-    Export:
-      Name: !Sub ${AWS::StackName}-Bucket
-  ArtifactBucket:
-    Value: !Ref ArtifactBucket
-    Export:
-      Name: !Sub ${AWS::StackName}-ArtifactBucket
-  Topic:
-    Value: !Ref Topic
-    Export:
-      Name: !Sub ${AWS::StackName}-Topic
-  Catalog:
-    Value: !Ref Catalog
-    Export:
-      Name: !Sub ${AWS::StackName}-Catalog
-  CatalogArn:
-    Value: !GetAtt Catalog.Arn
-    Export:
-      Name: !Sub ${AWS::StackName}-CatalogArn
+**Khả năng nâng cao:**
+
+- AMP giới thiệu tính năng **label-based active series limits** để cô lập workload “ồn ào”.
+- Giới hạn được áp dụng theo label set (ví dụ: `app="payment-service", environment="prod"`).
+- Ngăn một dịch vụ đơn lẻ làm quá tải toàn bộ workspace.
+
+**Lợi ích:**
+
+- Bảo vệ workload quan trọng.
+- Nâng cao khả năng dự đoán chi phí.
+- Khuyến khích thiết kế nhãn và metrics hợp lý.
+
+---
+
+### Nguyên tắc 4: Quan sát và Quản trị theo Label Set
+
+**Nâng cấp:**
+
+- CloudWatch metrics cung cấp dữ liệu ingestion theo từng label set.
+- Metrics quan trọng:
+  - `ActiveSeriesPerLabelSet`
+  - `IngestionRatePerLabelSet`
+  - `DiscardedSamplesPerLabelSet` (kèm lý do bị loại)
+
+**Kết quả:**
+
+- Đội ngũ có thể xác định workload nào tạo ra nhiều chi phí và overhead nhất.
+- Cung cấp dữ liệu để tinh chỉnh giới hạn nhãn và cải thiện thực hành quan sát.
+
+---
+
+## Các Tính năng và Dịch vụ Chính
+
+### Giới hạn theo Nhãn (Label-Based Limits)
+
+- Kiểm soát chi tiết số chuỗi thời gian đang hoạt động.
+- Cấu hình dễ dàng qua AWS Console hoặc CLI.
+- Có giới hạn mặc định cho workload không thuộc label set nào.
+
+### Managed Collectors
+
+- Scraper bảo mật, có khả năng mở rộng, được quản lý bởi AWS.
+- Hỗ trợ external labels để phù hợp với quy định label-set.
+
+### Tích hợp CloudWatch
+
+- Metrics dựng sẵn theo dõi tình trạng ingestion.
+- Cho phép tạo dashboard, cảnh báo và phản ứng tự động.
+
+---
+
+## Kết quả Thực tế
+
+### Hiệu quả Khách hàng
+
+- **Đội ngũ observability doanh nghiệp**: giảm rủi ro ingestion quá tải.
+- **Môi trường đa tài khoản**: đơn giản hóa việc thu thập metrics cross-account.
+- **Đội vận hành**: tăng khả năng quan sát chi phí và sức khỏe workload.
+
+### Ví dụ Lợi ích
+
+- Bảo vệ dịch vụ production khỏi workload noisy test.
+- Giảm chi phí bằng cách tối ưu metrics có độ phân mảnh nhãn cao (high-cardinality).
+- Đạt hiệu suất ingestion ổn định ở quy mô lớn.
+
+---
+
+## Khuyến nghị Hành động
+
+### Lời khuyên chính
+
+- Thiết lập AMP workspaces tập trung để quan sát ở quy mô lớn.
+- Liên tục giám sát quota và metrics ingestion qua CloudWatch.
+- Cấu hình label-based limits để cô lập workload và đảm bảo quản trị.
+
+### Chiến lược triển khai
+
+1. Xác định external labels cho từng workload hoặc tài khoản.
+2. Thiết lập giới hạn theo nhãn dựa trên mức độ quan trọng của nghiệp vụ.
+3. Giám sát discarded samples và phân tích nguyên nhân metrics noisy.
+4. Tự động hóa cảnh báo và dashboard để phát hiện sớm.
+
+---
+
+## Kết luận
+
+Amazon Managed Service for Prometheus mang đến công cụ cần thiết để mở rộng hệ thống quan sát mà không làm ảnh hưởng đến độ tin cậy hay chi phí. Với ingestion tập trung, giám sát quota và quản trị dựa trên nhãn, doanh nghiệp có thể bảo vệ workload quan trọng, tránh noisy neighbors và duy trì hiệu suất ổn định trong khi nhu cầu quan sát ngày càng tăng.
