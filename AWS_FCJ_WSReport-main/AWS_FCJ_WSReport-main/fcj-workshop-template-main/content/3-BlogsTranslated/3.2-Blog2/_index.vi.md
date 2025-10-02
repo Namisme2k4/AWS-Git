@@ -1,157 +1,82 @@
 ---
 title: "Blog 2"
-date: "2025-09-12"
+date: "2025-09-29"
 weight: 1
 chapter: false
 pre: " <b> 3.2. </b> "
 ---
 
-# Tối Ưu Hóa Thu Thập Metrics với Amazon Managed Service for Prometheus
+# Giới thiệu Claude Sonnet 4.5 trong Amazon Bedrock: Mô hình thông minh nhất của Anthropic cho lập trình và tác nhân phức tạp
 
-## Tổng quan
+Amazon Web Services (AWS) đã ra mắt **Claude Sonnet 4.5** trên Amazon Bedrock, mang đến cho nhà phát triển khả năng truy cập vào mô hình tiên tiến nhất của Anthropic. Mô hình này kế thừa dòng Claude 4 và được tối ưu hóa cho **các tác vụ lập trình, suy luận phức tạp và quy trình tác nhân (agentic workflows)**.
 
-Khi các tổ chức mở rộng hệ thống quan sát (observability), việc xử lý metrics một cách hiệu quả trở nên then chốt cho độ tin cậy, hiệu suất và tối ưu chi phí. Bài viết này giới thiệu cách **Amazon Managed Service for Prometheus (AMP)** giúp doanh nghiệp tối ưu hóa pipeline ingestion, giám sát quota và bảo vệ workload thông qua giới hạn số chuỗi theo nhãn (label-based active series limits).
-
-![Kiến trúc AMP Metrics Optimization](/images/AMP.png)  
-_Hình 1: Quan sát tập trung với Amazon Managed Service for Prometheus và kiểm soát ingestion dựa trên nhãn._
+Khi sử dụng Sonnet 4.5 trên Bedrock, doanh nghiệp được đảm bảo an toàn cấp độ doanh nghiệp, quyền kiểm soát dữ liệu và trải nghiệm API thống nhất, đồng thời khai thác các khả năng AI tiên tiến để xây dựng hệ thống thông minh.
 
 ---
 
-## Bối cảnh và Thách thức
+## Tính năng nổi bật
 
-### Thực trạng hiện tại
+### Lập trình và suy luận nâng cao
 
-- Các doanh nghiệp hiện đại vận hành nhiều workload trên nhiều tài khoản AWS và khu vực khác nhau.
-- Khối lượng metrics ingestion có thể tăng lên hàng triệu chuỗi thời gian đang hoạt động.
-- Nếu không kiểm soát, “noisy neighbors” có thể làm giảm hiệu suất và tăng chi phí.
+- Khả năng viết, tái cấu trúc, phát hiện lỗi và tuân thủ hướng dẫn tốt hơn.
+- Đạt kết quả hàng đầu trong các bài benchmark SWE-bench Verified.
+- Hỗ trợ **chế độ phản hồi nhanh** và **chế độ suy nghĩ mở rộng** cho phân tích sâu hơn.
+- Độ chính xác khi thực thi hướng dẫn phức tạp được cải thiện.
 
-### Thách thức chính
+### Tác nhân và quy trình dài hạn
 
-- Tập trung hóa metrics ingestion ở quy mô lớn.
-- Giám sát quota ingestion một cách hiệu quả.
-- Bảo vệ workload quan trọng khỏi các agent bị cấu hình sai hoặc đột biến dữ liệu.
-- Cân bằng giữa tính linh hoạt và khả năng dự đoán chi phí.
+- Được thiết kế để xây dựng **tác nhân tự động** xử lý các quy trình nhiều bước.
+- Điều phối công cụ thông minh hơn, bao gồm khả năng chạy song song.
+- Theo dõi tốt hơn việc sử dụng token và ngăn mất ngữ cảnh.
+- Tự động xóa lịch sử công cụ để duy trì hiệu quả.
+- API quản lý ngữ cảnh giúp giữ tính nhất quán trong các phiên kéo dài.
 
----
+### Cải tiến API
 
-## Nguyên tắc của AWS để Tối Ưu Hóa Ingestion
-
-### Nguyên tắc 1: Quan sát tập trung
-
-**Triết lý cốt lõi:**
-
-- Việc tập trung hóa metrics từ nhiều tài khoản mang lại mặt phẳng quan sát thống nhất.
-- Managed collectors và IAM roles cross-account đơn giản hóa pipeline ingestion.
-
-**Giải pháp:**
-
-- AMP workspaces đóng vai trò là endpoint tập trung cho việc scrape và lưu trữ metrics.
-- Cross-account ingestion với IAM roles đảm bảo bảo mật và khả năng mở rộng.
+- Quản lý ngữ cảnh dài thông minh hơn với thông báo dừng rõ ràng.
+- Stop reason mới `model_context_window_exceeded` để hỗ trợ gỡ lỗi.
+- Sửa lỗi định dạng tham số công cụ và xử lý xuống dòng cuối.
 
 ---
 
-### Nguyên tắc 2: Giám sát Quota và Mức sử dụng
+## Trường hợp sử dụng
 
-**Nền tảng:**
+Claude Sonnet 4.5 mở ra nhiều ứng dụng trong các lĩnh vực:
 
-- AMP định nghĩa quota cho tốc độ ingestion, số chuỗi đang hoạt động và độ đồng thời của truy vấn.
-- CloudWatch cung cấp metrics chi tiết về mức sử dụng.
-
-**Metrics chính:**
-
-- `IngestionRate`: số mẫu mỗi giây.
-- `ActiveSeries`: số chuỗi thời gian đang hoạt động.
-- `DiscardedSamples`: số mẫu bị loại bỏ.
-- Metrics cho rule evaluation và query TPS để tăng khả năng quan sát.
+- **An ninh mạng**: tự động vá lỗ hổng, phát hiện và ứng phó sự cố.
+- **Tài chính**: phân tích dữ liệu, mô hình dự đoán, kiểm toán.
+- **Tự động hóa doanh nghiệp**: tối ưu hóa quy trình liên phòng ban.
+- **Phát triển phần mềm**: trợ lý lập trình hỗ trợ thiết kế, tái cấu trúc, kiểm thử.
 
 ---
 
-### Nguyên tắc 3: Kiểm soát bằng Giới hạn Chuỗi Theo Nhãn
+## Bắt đầu với Bedrock
 
-**Khả năng nâng cao:**
-
-- AMP giới thiệu tính năng **label-based active series limits** để cô lập workload “ồn ào”.
-- Giới hạn được áp dụng theo label set (ví dụ: `app="payment-service", environment="prod"`).
-- Ngăn một dịch vụ đơn lẻ làm quá tải toàn bộ workspace.
-
-**Lợi ích:**
-
-- Bảo vệ workload quan trọng.
-- Nâng cao khả năng dự đoán chi phí.
-- Khuyến khích thiết kế nhãn và metrics hợp lý.
+- Truy cập Claude Sonnet 4.5 trực tiếp qua console và API của Bedrock.
+- Dùng **Bedrock Converse API** để chuyển đổi linh hoạt giữa các mô hình.
+- Kết hợp với **AgentCore** để phát triển hệ thống tác nhân với quản lý phiên, giám sát và hỗ trợ chạy dài hạn.
+- Tận dụng chế độ suy nghĩ mở rộng và cơ chế dọn ngữ cảnh để tối ưu hiệu suất và chi phí.
 
 ---
 
-### Nguyên tắc 4: Quan sát và Quản trị theo Label Set
+## Khả dụng và chi phí
 
-**Nâng cấp:**
-
-- CloudWatch metrics cung cấp dữ liệu ingestion theo từng label set.
-- Metrics quan trọng:
-  - `ActiveSeriesPerLabelSet`
-  - `IngestionRatePerLabelSet`
-  - `DiscardedSamplesPerLabelSet` (kèm lý do bị loại)
-
-**Kết quả:**
-
-- Đội ngũ có thể xác định workload nào tạo ra nhiều chi phí và overhead nhất.
-- Cung cấp dữ liệu để tinh chỉnh giới hạn nhãn và cải thiện thực hành quan sát.
-
----
-
-## Các Tính năng và Dịch vụ Chính
-
-### Giới hạn theo Nhãn (Label-Based Limits)
-
-- Kiểm soát chi tiết số chuỗi thời gian đang hoạt động.
-- Cấu hình dễ dàng qua AWS Console hoặc CLI.
-- Có giới hạn mặc định cho workload không thuộc label set nào.
-
-### Managed Collectors
-
-- Scraper bảo mật, có khả năng mở rộng, được quản lý bởi AWS.
-- Hỗ trợ external labels để phù hợp với quy định label-set.
-
-### Tích hợp CloudWatch
-
-- Metrics dựng sẵn theo dõi tình trạng ingestion.
-- Cho phép tạo dashboard, cảnh báo và phản ứng tự động.
-
----
-
-## Kết quả Thực tế
-
-### Hiệu quả Khách hàng
-
-- **Đội ngũ observability doanh nghiệp**: giảm rủi ro ingestion quá tải.
-- **Môi trường đa tài khoản**: đơn giản hóa việc thu thập metrics cross-account.
-- **Đội vận hành**: tăng khả năng quan sát chi phí và sức khỏe workload.
-
-### Ví dụ Lợi ích
-
-- Bảo vệ dịch vụ production khỏi workload noisy test.
-- Giảm chi phí bằng cách tối ưu metrics có độ phân mảnh nhãn cao (high-cardinality).
-- Đạt hiệu suất ingestion ổn định ở quy mô lớn.
-
----
-
-## Khuyến nghị Hành động
-
-### Lời khuyên chính
-
-- Thiết lập AMP workspaces tập trung để quan sát ở quy mô lớn.
-- Liên tục giám sát quota và metrics ingestion qua CloudWatch.
-- Cấu hình label-based limits để cô lập workload và đảm bảo quản trị.
-
-### Chiến lược triển khai
-
-1. Xác định external labels cho từng workload hoặc tài khoản.
-2. Thiết lập giới hạn theo nhãn dựa trên mức độ quan trọng của nghiệp vụ.
-3. Giám sát discarded samples và phân tích nguyên nhân metrics noisy.
-4. Tự động hóa cảnh báo và dashboard để phát hiện sớm.
+- Có mặt tại nhiều vùng AWS với inference liên vùng.
+- Bổ sung cho các mô hình Claude khác đã có sẵn trên Bedrock.
+- Cân bằng giữa hiệu năng, độ trễ và chi phí cho khối lượng công việc lớn.
+- Đồng thời xuất hiện trên API của Anthropic và các nền tảng đám mây tích hợp khác.
 
 ---
 
 ## Kết luận
 
-Amazon Managed Service for Prometheus mang đến công cụ cần thiết để mở rộng hệ thống quan sát mà không làm ảnh hưởng đến độ tin cậy hay chi phí. Với ingestion tập trung, giám sát quota và quản trị dựa trên nhãn, doanh nghiệp có thể bảo vệ workload quan trọng, tránh noisy neighbors và duy trì hiệu suất ổn định trong khi nhu cầu quan sát ngày càng tăng.
+Claude Sonnet 4.5 đánh dấu bước tiến lớn trong việc kết hợp **trí tuệ lập trình hàng đầu** với **khả năng tác nhân dài hạn**. Thông qua Amazon Bedrock, tổ chức có thể dễ dàng áp dụng mà không cần gánh nặng quản lý hạ tầng.
+
+Những lợi ích chính gồm:
+
+- Hiệu suất vượt trội về lập trình và suy luận
+- Hỗ trợ đáng tin cậy cho quy trình dài hạn
+- Điều phối công cụ thông minh và kiểm soát ngữ cảnh
+- Tích hợp an toàn, sẵn sàng cho doanh nghiệp thông qua Bedrock
+
+Claude Sonnet 4.5 giúp các nhóm xây dựng thế hệ ứng dụng AI tự động và thông minh tiếp theo.

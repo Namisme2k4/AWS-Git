@@ -1,157 +1,81 @@
 ---
 title: "Blog 3"
-date: "2025-09-12"
+date: "2025-09-29"
 weight: 1
 chapter: false
-pre: " <b> 3.2. </b> "
+pre: " <b> 3.4. </b> "
 ---
 
-# Tối ưu hóa ingestion Metrics với Amazon Managed Service for Prometheus
+# Đo lường độ chính xác của việc ghép dữ liệu theo luật hoặc ML trong AWS Entity Resolution
 
-## Tổng quan
 
-Khi các tổ chức mở rộng hệ thống quan sát (observability), việc xử lý metrics hiệu quả trở thành yếu tố then chốt để đảm bảo độ tin cậy, hiệu năng và tối ưu chi phí. Bài viết này giới thiệu cách **Amazon Managed Service for Prometheus (AMP)** giúp doanh nghiệp tối ưu pipeline ingestion, giám sát quota, và bảo vệ workload thông qua giới hạn active series dựa trên nhãn (label-based).
+Trong nhiều tổ chức, dữ liệu khách hàng, sản phẩm hoặc bệnh nhân thường được lưu trữ trên nhiều hệ thống khác nhau. Để xây dựng cái nhìn thống nhất, cần phải **ghép (matching)** các bản ghi trùng khớp với cùng một thực thể. Thách thức đặt ra là đảm bảo phương pháp ghép — **dựa trên luật (rule-based)** hoặc **dựa trên học máy (ML-based)** — có độ chính xác đủ cao.
 
-![Kiến trúc tối ưu hóa Metrics với AMP](/images/Blog3.png)  
-_Hình 1:- Hợp nhất nhật ký trên nhiều tài khoản và vùng._
-
----
-
-## Bối cảnh và thách thức
-
-### Thực trạng hiện tại
-
-- Doanh nghiệp hiện đại vận hành nhiều workload trên nhiều tài khoản và vùng AWS.
-- Khối lượng metrics ingestion dễ dàng tăng lên đến hàng triệu time series đang hoạt động.
-- Nếu không có kiểm soát, “noisy neighbors” có thể làm suy giảm hiệu năng và tăng chi phí.
-
-### Các thách thức chính
-
-- Tập trung hóa ingestion metrics ở quy mô lớn.
-- Giám sát hiệu quả quota ingestion.
-- Bảo vệ workload quan trọng khỏi agent cấu hình sai hoặc phát sinh bất thường.
-- Cân bằng giữa tính linh hoạt, tính dự đoán và kiểm soát chi phí.
+Bài viết này giải thích cách đánh giá và đo lường độ chính xác trong **AWS Entity Resolution**, giúp các nhóm xác minh liệu chiến lược đã chọn có đáp ứng yêu cầu kinh doanh và tuân thủ hay không.
 
 ---
 
-## Nguyên tắc cốt lõi của AWS cho ingestion tối ưu
+## Tại sao độ chính xác quan trọng
 
-### Nguyên tắc 1: Quan sát tập trung (Centralized Observability)
+Độ chính xác trong ghép thực thể ảnh hưởng trực tiếp đến nhiều trường hợp sử dụng:
 
-**Triết lý cốt lõi:**
+- **Customer 360**: Xây dựng hồ sơ khách hàng toàn diện
+- **Phát hiện gian lận**: Nhận diện các danh tính trùng lặp hoặc giả mạo
+- **Y tế**: Liên kết hồ sơ bệnh nhân mà vẫn bảo vệ quyền riêng tư
+- **Marketing**: Đảm bảo cá nhân hóa và phân khúc chính xác
 
-- Hợp nhất metrics từ nhiều tài khoản để có một mặt phẳng quan sát thống nhất.
-- Bộ thu thập (collector) được quản lý và vai trò cross-account bảo mật giúp đơn giản hóa pipeline ingestion.
+Nếu độ chính xác thấp, có thể xảy ra:
 
-**Giải pháp:**
-
-- Các workspace AMP đóng vai trò endpoint tập trung để scrape và lưu trữ metrics.
-- Ingestion cross-account với IAM roles đảm bảo bảo mật và khả năng mở rộng.
-
----
-
-### Nguyên tắc 2: Giám sát quota và mức sử dụng
-
-**Nền tảng:**
-
-- AMP định nghĩa quota cho tốc độ ingestion, số lượng active series, và độ đồng thời của truy vấn.
-- Metrics của CloudWatch cung cấp thông tin chi tiết về mức sử dụng.
-
-**Các metrics chính:**
-
-- `IngestionRate`: số mẫu/giây.
-- `ActiveSeries`: số lượng time series đang hoạt động.
-- `DiscardedSamples`: số mẫu bị từ chối.
-- Metrics về đánh giá rule và truy vấn TPS giúp tăng khả năng quan sát.
+- **Dương tính giả**: Các thực thể khác nhau bị ghép sai thành một
+- **Âm tính giả**: Các bản ghi cùng thực thể nhưng không được ghép
 
 ---
 
-### Nguyên tắc 3: Kiểm soát bằng giới hạn active series theo nhãn
+## Ghép dữ liệu theo luật vs. học máy
 
-**Năng lực cải tiến:**
+- **Ghép theo luật (Rule-based)**  
+  Sử dụng các quy tắc xác định (ví dụ: khớp chính xác theo email + khớp gần đúng theo tên).
 
-- Giới thiệu giới hạn dựa trên nhãn để cô lập workload gây ồn (noisy).
-- Giới hạn áp dụng theo tập nhãn (ví dụ: `app="payment-service", environment="prod"`).
-- Ngăn chặn một dịch vụ đơn lẻ làm quá tải toàn bộ workspace.
+  - Dễ hiểu và dễ giải thích
+  - Hiệu quả khi dữ liệu đã chuẩn hóa
+  - Hạn chế khi dữ liệu có nhiều biến thể
 
-**Lợi ích:**
-
-- Bảo vệ workload quan trọng.
-- Cải thiện khả năng dự đoán chi phí.
-- Khuyến khích thiết kế nhãn tốt hơn và duy trì hygiene cho metrics.
-
----
-
-### Nguyên tắc 4: Quan sát và quản trị theo tập nhãn
-
-**Cải tiến:**
-
-- CloudWatch giờ đây cung cấp dữ liệu ingestion chi tiết ở mức độ tập nhãn.
-- Các metrics quan trọng:
-  - `ActiveSeriesPerLabelSet`
-  - `IngestionRatePerLabelSet`
-  - `DiscardedSamplesPerLabelSet` (kèm lý do từ chối)
-
-**Kết quả:**
-
-- Nhóm vận hành có thể xác định workload nào tạo ra nhiều overhead nhất.
-- Cung cấp dữ liệu để điều chỉnh giới hạn nhãn và cải thiện thực hành quan sát.
+- **Ghép theo học máy (ML-based)**  
+  Sử dụng mô hình học để nhận diện mức độ tương đồng giữa các thuộc tính.
+  - Xử lý tốt dữ liệu lộn xộn, không đầy đủ hoặc không đồng nhất
+  - Có thể cải thiện độ chính xác theo thời gian
+  - Cần dữ liệu gán nhãn để đánh giá
 
 ---
 
-## Tính năng và dịch vụ chính
+## Đo lường độ chính xác trong AWS Entity Resolution
 
-### Giới hạn dựa trên nhãn
+AWS Entity Resolution cung cấp sẵn công cụ để đo lường độ chính xác của cả hai phương pháp:
 
-- Kiểm soát chi tiết số lượng active time series.
-- Có thể cấu hình qua AWS Console hoặc CLI.
-- Giới hạn mặc định áp dụng cho workload ngoài tập nhãn đã định nghĩa.
+1. **Precision (Độ chính xác)** – Tỷ lệ các ghép đúng trong tổng số ghép được phát hiện.
+2. **Recall (Độ bao phủ)** – Tỷ lệ các ghép đúng được phát hiện trong tất cả các ghép thực tế.
+3. **F1 Score** – Trung bình điều hòa giữa Precision và Recall.
 
-### Bộ thu thập được quản lý (Managed Collectors)
+### Quy trình đánh giá
 
-- Bộ scrape an toàn, có thể mở rộng, do AWS quản lý.
-- Hỗ trợ nhãn ngoài (external labels) để đồng bộ ingestion với quản trị tập nhãn.
-
-### Tích hợp CloudWatch
-
-- Có sẵn metrics theo dõi sức khỏe ingestion.
-- Cho phép tạo dashboard, cảnh báo và phản ứng tự động.
+1. Xác định **tập dữ liệu kiểm thử** có nhãn “ground truth”.
+2. Thực hiện ghép theo cấu hình (luật hoặc ML).
+3. So sánh kết quả ghép với ground truth.
+4. Đánh giá các chỉ số (Precision, Recall, F1) và điều chỉnh nếu cần.
 
 ---
 
-## Kết quả thực tế
+## Thực tiễn tốt nhất
 
-### Kết quả từ khách hàng
-
-- **Nhóm quan sát doanh nghiệp**: giảm rủi ro ingestion quá tải.
-- **Môi trường đa tài khoản**: đơn giản hóa việc thu thập metrics cross-account.
-- **Nhóm vận hành**: cải thiện khả năng nhìn rõ chi phí và sức khỏe workload.
-
-### Ví dụ lợi ích
-
-- Bảo vệ dịch vụ production khỏi workload thử nghiệm gây ồn.
-- Giảm chi phí nhờ tinh chỉnh metrics có độ phân mảnh cao (high-cardinality).
-- Duy trì hiệu năng ingestion ổn định ở quy mô lớn.
-
----
-
-## Khuyến nghị hành động
-
-### Lời khuyên chính
-
-- Thiết lập AMP workspace trung tâm cho quan sát ở quy mô lớn.
-- Liên tục giám sát quota và metrics ingestion qua CloudWatch.
-- Cấu hình giới hạn dựa trên nhãn để cô lập workload và đảm bảo quản trị.
-
-### Chiến lược triển khai
-
-1. Định nghĩa nhãn ngoài (external labels) cho từng workload hoặc tài khoản.
-2. Đặt giới hạn nhãn theo mức độ quan trọng kinh doanh.
-3. Giám sát `discarded samples` và điều tra metrics gây ồn.
-4. Tự động hóa cảnh báo và dashboard để phát hiện sớm.
+- Bắt đầu với **tập dữ liệu đại diện** cho thực tế.
+- Lặp lại và tinh chỉnh quy tắc hoặc mô hình ML dựa trên kết quả đo lường.
+- Sử dụng **tính năng giải thích (explainability)** khi áp dụng ML để tăng độ tin cậy.
+- Liên tục theo dõi và đánh giá lại khi thêm nguồn dữ liệu mới.
 
 ---
 
 ## Kết luận
 
-**Amazon Managed Service for Prometheus** cung cấp các công cụ cần thiết để mở rộng quan sát mà không hy sinh độ tin cậy hoặc hiệu quả chi phí. Với ingestion tập trung, giám sát quota, và quản trị dựa trên nhãn, các tổ chức có thể bảo vệ workload quan trọng, ngăn chặn noisy neighbors, và duy trì hiệu năng ổn định khi nhu cầu quan sát ngày càng tăng.
+Đo lường độ chính xác là bước cốt lõi để chọn chiến lược ghép dữ liệu phù hợp trong AWS Entity Resolution. Dù chọn **sự đơn giản của luật** hay **sự linh hoạt của ML**, việc theo dõi các chỉ số như Precision, Recall, và F1 sẽ đảm bảo giải pháp mang lại kết quả tin cậy cho các trường hợp sử dụng trong nhiều lĩnh vực như y tế, tài chính và bán lẻ.
+
+---

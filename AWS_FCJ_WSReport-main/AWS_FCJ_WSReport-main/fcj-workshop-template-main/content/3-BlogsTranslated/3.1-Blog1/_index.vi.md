@@ -1,182 +1,81 @@
 ---
 title: "Blog 1"
-date: "2025-09-12"
+date: "2025-09-29"
 weight: 1
 chapter: false
 pre: " <b> 3.1. </b> "
 ---
 
-# AWS AI Agents sẵn sàng sản xuất ở quy mô lớn
+# Amazon ECS hỗ trợ IPv6-only: Mở rộng mạng lưới container
 
-## Tổng quan
-
-AWS CEO Matt Garman đã chia sẻ tầm nhìn về một sự thay đổi công nghệ có tính chuyển đổi tương đương với sự ra đời của internet. Bài viết này giới thiệu cách AWS đang xây dựng nền tảng để triển khai AI agents ở quy mô doanh nghiệp với độ tin cậy và bảo mật cao.
-
-![AWS AI Stack Architecture](/images/Blog1.png)
-_Figure 1: Ngăn xếp AI của AWS - Nền tảng toàn diện để xây dựng và triển khai các hệ thống AI đại lý sẵn sàng sản xuất ở quy mô lớn._
+Amazon Elastic Container Service (ECS) hiện đã hỗ trợ triển khai workload **chỉ sử dụng IPv6**, cho phép bạn chạy ứng dụng container trong môi trường IPv6 mà không cần phụ thuộc vào IPv4. Tính năng này giúp đơn giản hóa kiến trúc mạng, giảm chi phí vận hành và đáp ứng các yêu cầu tuân thủ trong bối cảnh địa chỉ IPv4 ngày càng khan hiếm.
 
 ---
 
-## Bối cảnh và Thách thức
+## Khả năng khi dùng IPv6-only trên ECS
 
-### Thực trạng hiện tại
+Với cấu hình IPv6-only, các tác vụ ECS có thể:
 
-- Các hệ thống AI agent thông minh đã bắt đầu giải quyết các vấn đề phức tạp, tự động hóa quy trình công việc và tạo ra những khả năng mới trong nhiều ngành
-- Thành công ban đầu từ AstraZeneca, Yahoo Finance, Syngenta
-- Cần một phương pháp thực tế để giải quyết độ phức tạp vốn có của các hệ thống agentic
-
-### Thách thức chính
-
-- Chuyển từ thử nghiệm sang hệ thống agent sẵn sàng sản xuất
-- Địa chỉ độ phức tạp vốn có của agentic systems
-- Cân bằng giữa tính linh hoạt và độ tin cậy doanh nghiệp
+- Chạy trong subnet chỉ có IPv6, không cần dual-stack.
+- Tích hợp với PrivateLink và các endpoint VPC IPv6.
+- Sử dụng security group và VPC Flow Logs hỗ trợ IPv6.
+- Giao tiếp với các dịch vụ AWS như ECR, CloudWatch, Secrets Manager, Parameter Store.
+- Hoạt động với các chế độ mạng awsvpc, bridge, host tương tự IPv4.
 
 ---
 
-## 4 Nguyên tắc Cốt lõi của AWS
+## Cấu hình mạng IPv6-only
 
-### Nguyên tắc 1: Chấp nhận sự nhanh nhẹn như một lợi thế cạnh tranh
+Để triển khai ECS IPv6-only, cần thực hiện:
 
-**Tư duy chính:**
+1. **Chuẩn bị VPC và subnet**
 
-- Các tổ chức thành công sẽ không phải là những tổ chức dự đoán hoàn hảo tương lai, mà là những tổ chức thích ứng nhanh chóng khi nó diễn ra
-- Xây dựng kiến trúc agentic linh hoạt và mở thay vì các framework cứng nhắc
+   - Gắn IPv6 CIDR cho VPC.
+   - Tạo subnet chỉ có IPv6.
+   - Bật gán địa chỉ IPv6 tự động.
 
-**Giải pháp: Amazon Bedrock AgentCore**
+2. **Cấu hình bảo mật**
 
-- Một bộ dịch vụ hoàn chỉnh để triển khai và vận hành các agent có khả năng cao một cách an toàn ở quy mô doanh nghiệp
-- Runtime serverless bảo mật với cách ly phiên hoàn toàn
-- Tương thích với các framework mã nguồn mở như CrewAI, LangGraph, LlamaIndex
-- Khách hàng đã thử nghiệm: Itaú Unibanco, Innovaccer, Boomi, Box, Epsilon
+   - Cho phép lưu lượng IPv6 trong security group.
+   - Mở ICMPv6 để hỗ trợ Neighbor Discovery.
+   - Định tuyến IPv6 qua Internet Gateway hoặc Egress-Only Internet Gateway.
 
-### Nguyên tắc 2: Phát triển các nguyên tắc cơ bản cho kỷ nguyên agentic
+3. **Tạo target group IPv6 cho load balancer**
 
-**Các yếu tố cơ bản đã phát triển:**
+   - Dùng ALB hoặc NLB với target group IPv6.
+   - Cấu hình health check cho endpoint IPv6.
 
-**A. Bảo mật và Tin cậy**
-
-- AgentCore Runtime giúp giải quyết với các môi trường tính toán chuyên dụng cho mỗi phiên và cách ly bộ nhớ giúp ngăn ngừa rò rỉ dữ liệu giữa các agent
-- Transparency, guardrails, verification
-
-**B. Độ tin cậy và Khả năng mở rộng**
-
-- Checkpointing và recovery capabilities
-- Tự động scaling từ 0 đến hàng nghìn concurrent sessions
-- Loại bỏ capacity planning và infrastructure maintenance
-
-**C. Danh tính (Identity)**
-
-- AgentCore Identity với quyền tạm thời, chi tiết
-- Tích hợp với Amazon Cognito, Microsoft Entra ID, Okta
-- OAuth providers: GitHub, Google, Salesforce, Slack
-
-**D. Observability**
-
-- Khả năng quan sát trở nên cần thiết không chỉ để khắc phục sự cố, mà còn cho việc tuân thủ và cải tiến liên tục
-- Real-time visibility qua built-in dashboards
-- Standardized telemetry
-
-**E. Dữ liệu**
-
-- AgentCore Gateway chuyển đổi data sources thành agent-compatible tools
-- Tích hợp với Amazon Bedrock Knowledge Bases
-
-**F. Tích hợp liền mạch**
-
-- AgentCore Gateway giúp điều này có thể xảy ra bằng cách chuyển đổi API và dịch vụ thành các công cụ tương thích với agent với mã tối thiểu
-- AWS API MCP Server cho giao diện callable đến AWS services
-
-**G. Công cụ và Khả năng**
-
-- AgentCore Memory: quản lý short-term và long-term memory
-- AgentCore Browser: web interactions
-- AgentCore Code Interpreter: thực thi code an toàn
-
-### Nguyên tắc 3: Cung cấp kết quả vượt trội với sự lựa chọn model và dữ liệu
-
-**Tính đa dạng của Model:**
-
-- Không có model đơn lẻ nào xuất sắc trên tất cả các khía cạnh, đó là lý do tại sao chúng tôi đi tiên phong trong việc lựa chọn model với Amazon Bedrock năm 2023
-
-**Khả năng tùy chỉnh mới:**
-
-- **Amazon Nova customization in Amazon SageMaker AI**:
-  - Pre-training và post-training
-  - Fine-tuning và alignment
-  - PEFT và full fine-tuning
-  - SFT, DPO, PPO, CPT, Knowledge Distillation
-- **Nova Act**: AI model được training để thực hiện actions trong web browser
-- **Amazon S3 Vectors**: Giảm chi phí lưu trữ vector 90% trong khi duy trì hiệu suất truy vấn dưới giây
-
-### Nguyên tắc 4: Triển khai các giải pháp chuyển đổi trải nghiệm
-
-**Marketplace và Solutions:**
-
-- AI Agents and Tools trong AWS Marketplace với deployment options linh hoạt
-- **Kiro**: AI IDE cho spec-driven development
-- **AWS Transform**: tự động hóa modernization tasks
-- **Amazon Connect**: unlimited AI trên mọi customer interaction
+4. **Triển khai dịch vụ ECS**
+   - Khởi chạy trong subnet IPv6-only với chế độ awsvpc.
+   - ECS sẽ tự động gán địa chỉ IPv6, đăng ký vào target group và service discovery.
 
 ---
 
-## Các Tính năng và Dịch vụ Chính
+## Tích hợp với dịch vụ AWS khác
 
-### Amazon Bedrock AgentCore
-
-- **Runtime**: Serverless, cách ly session, longest running workload
-- **Identity**: Fine-grained permissions, standards-based authentication
-- **Memory**: Short-term và long-term memory management
-- **Gateway**: Chuyển đổi APIs thành agent-compatible tools
-- **Observability**: Real-time monitoring và compliance
-
-### Amazon Nova Models
-
-- **Nova Customization**: Comprehensive model customization capabilities
-- **Nova Act**: Browser automation agents (research preview)
-- **Nova Act SDK**: Cloud-based browser execution với AgentCore Browser
-
-### Amazon S3 Vectors
-
-- Native vector support trong cloud object store
-- 90% cost reduction cho vector storage
-- Sub-second query performance
-- Tích hợp với Bedrock Knowledge Bases và OpenSearch
+- **ECR**: Tải ảnh container từ ECR/ECR Public thông qua endpoint dual-stack.
+- **Service Discovery & ECS Service Connect**: Hỗ trợ bản ghi AAAA và giao tiếp IPv6 giữa dịch vụ trong VPC hoặc giữa nhiều VPC.
+- **Storage & Database**: Có thể kết nối đến S3, EFS, RDS, Aurora nếu dịch vụ hỗ trợ IPv6.
+- **Dịch vụ chỉ hỗ trợ IPv4**: Sử dụng DNS64/NAT64 để ánh xạ lưu lượng IPv6 sang IPv4.
 
 ---
 
-## Kết quả Thực tế
+## Chiến lược di chuyển sang IPv6-only
 
-### Khách hàng Success Stories
-
-- **AstraZeneca**: Accelerated healthcare insight discovery
-- **Yahoo Finance**: Transformed financial research for millions
-- **Syngenta**: AI-driven precision farming revolution
-- **NFL, BMW**: Millions in productivity gains
-
-### Investment và Support
-
-- Đầu tư thêm 100 triệu đô la, tăng gấp đôi đầu tư vào AWS Generative AI Innovation Center
-- Hỗ trợ hàng nghìn khách hàng đạt productivity gains hàng triệu đô la
-
----
-
-## Khuyến nghị Hành động
-
-### Lời khuyên chính
-
-- "Lời khuyên quan trọng nhất tôi có thể đưa ra rất đơn giản: bắt đầu ngay bây giờ"
-- Chọn một vấn đề kinh doanh cụ thể quan trọng và bắt đầu xây dựng
-- Bắt đầu learning cycle, thu thập feedback thực tế
-
-### Chiến lược triển khai
-
-1. **Không cố gắng giải quyết mọi thứ cùng lúc**
-2. **Tập trung vào vấn đề cụ thể**
-3. **Lặp lại dựa trên feedback thực tế**
-4. **Tận dụng các pre-built solutions từ AWS Marketplace**
+- Với dịch vụ không gắn load balancer: cập nhật trực tiếp subnet và security group sang IPv6.
+- Với dịch vụ có load balancer: triển khai song song service IPv6 mới, sau đó chuyển dần traffic.
+- Dùng weighted target group hoặc DNS routing để điều phối chuyển đổi.
+- Giám sát bằng CloudWatch, logs ứng dụng và VPC Flow Logs trước khi tắt dịch vụ IPv4.
 
 ---
 
 ## Kết luận
 
-AWS đang thiết lập chuẩn mực cho agentic AI với cùng nguyên tắc security, reliability, và data privacy như cloud computing. Bất kể use case hay yêu cầu của bạn, AWS cung cấp nền tảng phù hợp để giúp bạn thành công. Cách tiếp cận này kết hợp rapid innovation với foundation mạnh mẽ về bảo mật và operational excellence, giúp organizations chuyển từ experiments sang production-ready agent systems đáng tin cậy.
+Tính năng **IPv6-only** trên Amazon ECS mang lại nhiều lợi ích:
+
+- Giảm phụ thuộc vào IPv4.
+- Đơn giản hóa cấu hình mạng container.
+- Đáp ứng các yêu cầu tuân thủ IPv6.
+- Duy trì khả năng tích hợp đầy đủ với dịch vụ AWS khác.
+
+Việc triển khai IPv6-only giúp các tổ chức chuẩn bị sẵn sàng cho tương lai mạng lưới và đảm bảo khả năng mở rộng dài hạn.

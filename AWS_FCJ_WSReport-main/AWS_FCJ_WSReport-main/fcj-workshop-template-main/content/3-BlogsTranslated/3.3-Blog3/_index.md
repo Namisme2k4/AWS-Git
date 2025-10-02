@@ -1,157 +1,77 @@
 ---
 title: "Blog 3"
-date: "2025-09-12"
+date: "2025-09-29"
 weight: 1
 chapter: false
-pre: " <b> 3.2. </b> "
+pre: " <b> 3.3. </b> "
 ---
 
-# Optimizing Metrics Ingestion with Amazon Managed Service for Prometheus
+# Measuring the Accuracy of Rule or ML-based Matching in AWS Entity Resolution
 
-## Overview
+Organizations often maintain customer, product, or patient data across multiple systems. To build a unified view, it is essential to **match records** that refer to the same entity. A common challenge is ensuring that the chosen matching approach — **rule-based** or **machine learning (ML)-based** — provides sufficient accuracy.
 
-As organizations scale their observability systems, handling metrics efficiently becomes critical for reliability, performance, and cost optimization. This article introduces how Amazon Managed Service for Prometheus (AMP) enables enterprises to optimize ingestion pipelines, monitor quotas, and protect workloads through label-based active series limits.
-
-![AMP Metrics Optimization Architecture](/images/Blog3.png)  
-_Figure 1:- Consolidating logs across multiple accounts and regions._
+This post explains how to evaluate and measure accuracy within **AWS Entity Resolution**, helping teams validate whether their chosen strategy meets business and compliance needs.
 
 ---
 
-## Context and Challenges
+## Why Accuracy Matters
 
-### Current State
+Accurate entity matching directly impacts downstream use cases:
 
-- Modern enterprises run multiple workloads across AWS accounts and regions.
-- Metrics ingestion volumes can easily grow into millions of active time series.
-- Without proper controls, “noisy neighbors” can degrade performance and increase costs.
+- **Customer 360**: Building a complete customer profile
+- **Fraud detection**: Identifying duplicate or synthetic identities
+- **Healthcare**: Linking patient records without compromising privacy
+- **Marketing**: Ensuring correct personalization and segmentation
 
-### Key Challenges
-
-- Centralizing metrics ingestion at scale.
-- Monitoring ingestion quotas effectively.
-- Protecting critical workloads from runaway or misconfigured agents.
-- Balancing flexibility with predictability and cost control.
+A poor matching strategy can lead to **false positives** (different entities incorrectly linked) or **false negatives** (same entity missed).
 
 ---
 
-## AWS’s Core Principles for Optimized Ingestion
+## Rule-based vs ML-based Matching
 
-### Principle 1: Centralized Observability
+- **Rule-based matching**  
+  Uses deterministic rules (e.g., exact match on email + fuzzy match on name).
 
-**Core Philosophy:**
+  - Easy to understand and explain
+  - Works well when data is standardized
+  - Limited flexibility for variations in data
 
-- Consolidating metrics across accounts provides a unified observability plane.
-- Managed collectors and secure cross-account roles simplify ingestion pipelines.
-
-**Solution:**
-
-- AMP workspaces act as centralized endpoints for scraping and storing metrics.
-- Cross-account ingestion with IAM roles ensures security and scalability.
-
----
-
-### Principle 2: Monitor Quotas and Usage
-
-**Fundamentals:**
-
-- AMP defines quotas for ingestion rate, active series, and query concurrency.
-- CloudWatch metrics expose detailed usage insights.
-
-**Key Metrics:**
-
-- `IngestionRate`: samples per second.
-- `ActiveSeries`: number of active time series.
-- `DiscardedSamples`: number of rejected samples.
-- Rule evaluation and query TPS metrics for additional visibility.
+- **ML-based matching**  
+  Uses models trained to learn similarities across attributes.
+  - Handles messy, inconsistent, or incomplete data better
+  - Improves accuracy over time
+  - Requires labeled data for evaluation
 
 ---
 
-### Principle 3: Control with Label-Based Active Series Limits
+## Measuring Accuracy in AWS Entity Resolution
 
-**Evolved Capabilities:**
+AWS Entity Resolution provides built-in tools to help measure accuracy of both approaches:
 
-- Introduced label-based limits to isolate noisy workloads.
-- Limits apply per label set (e.g., `app="payment-service", environment="prod"`).
-- Prevents a single service from overwhelming the entire workspace.
+1. **Precision** – proportion of correctly matched records among all matches.
+2. **Recall** – proportion of actual matches that were correctly identified.
+3. **F1 Score** – harmonic mean of precision and recall.
 
-**Benefits:**
+### Workflow for Evaluation
 
-- Protects mission-critical workloads.
-- Improves cost predictability.
-- Encourages better metric hygiene and label design.
-
----
-
-### Principle 4: Observability and Governance per Label Set
-
-**Enhancements:**
-
-- CloudWatch metrics now expose ingestion data at label-set granularity.
-- Key metrics:
-  - `ActiveSeriesPerLabelSet`
-  - `IngestionRatePerLabelSet`
-  - `DiscardedSamplesPerLabelSet` (with rejection reasons)
-
-**Outcome:**
-
-- Teams can identify which workloads generate the most overhead.
-- Provides data for tuning label limits and refining observability practices.
+1. Define a **validation dataset** with ground truth labels.
+2. Run matching using either rule-based or ML-based configuration.
+3. Compare output matches against ground truth.
+4. Review metrics (precision, recall, F1) to decide if adjustments are needed.
 
 ---
 
-## Key Features and Services
+## Best Practices
 
-### Label-Based Limits
-
-- Fine-grained control over active time series.
-- Configurable via AWS Console or CLI.
-- Default limits for workloads outside defined label sets.
-
-### Managed Collectors
-
-- Secure, scalable scrapers managed by AWS.
-- Support external labels to align ingestion with label-set governance.
-
-### CloudWatch Integration
-
-- Pre-built metrics for ingestion health.
-- Enables dashboards, alarms, and automated responses.
-
----
-
-## Real-World Results
-
-### Customer Outcomes
-
-- **Enterprise observability teams**: Reduced risk of ingestion overload.
-- **Multi-account environments**: Simplified cross-account metrics collection.
-- **Operations teams**: Improved visibility into cost drivers and workload health.
-
-### Example Benefits
-
-- Shielded production services from noisy test workloads.
-- Reduced cost by tuning high-cardinality metrics.
-- Achieved consistent ingestion performance at scale.
-
----
-
-## Action Recommendations
-
-### Key Advice
-
-- Establish central AMP workspaces for observability at scale.
-- Continuously monitor quotas and ingestion metrics via CloudWatch.
-- Configure label-based limits to isolate workloads and enforce governance.
-
-### Implementation Strategy
-
-1. Define external labels for each workload or account.
-2. Set label-based limits aligned to business criticality.
-3. Monitor discarded samples and investigate noisy metrics.
-4. Automate alerts and dashboards to ensure early detection.
+- Start with a **representative dataset** for testing.
+- Iterate and refine rules or ML models based on accuracy results.
+- Use **explainability features** (especially with ML) to build trust.
+- Continuously monitor and re-evaluate as new data sources are added.
 
 ---
 
 ## Conclusion
 
-Amazon Managed Service for Prometheus provides the necessary tools to scale observability without sacrificing reliability or cost efficiency. With centralized ingestion, quota monitoring, and label-based governance, organizations can protect mission-critical workloads, prevent noisy neighbors, and maintain predictable performance as observability needs grow.
+Measuring accuracy is essential to selecting the right matching strategy in AWS Entity Resolution. Whether you choose **rule-based simplicity** or **ML-based adaptability**, tracking metrics like precision, recall, and F1 ensures the solution supports reliable analytics and decision-making across industries such as healthcare, finance, and retail.
+
+---
