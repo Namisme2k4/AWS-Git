@@ -20,13 +20,13 @@ pre: " <b> 1.5. </b> "
 
 | Thứ | Công việc                                                                                                                  | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu                            |
 | --- | -------------------------------------------------------------------------------------------------------------------------- | ------------ | --------------- | ----------------------------------------- |
-| 2   | - Học Module 05-01 - Shared Responsibility Model                                                                           | 06/10/2025   | 06/10/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 3   | - Học Module 05-02 - Amazon Identity and Access Management (IAM)                                                           | 07/10/2025   | 07/10/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Học Module 05-03 - Amazon Cognito <br> - Học Module 05-04 - AWS Organization                                             | 08/10/2025   | 08/10/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Học Module 05-05 - AWS Identity Center <br> - Học Module 05-06 - Amazon Key Management Service (KMS)                     | 09/10/2025   | 09/10/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - Học Module 05-07 - AWS Security Hub <br> - Học Module 05-08 - Hands-on & Additional Research                             | 10/10/2025   | 10/10/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 7   | - Thực hành các bài lab liên quan của tuần 5                                                                               | 11/10/2025   | 11/10/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| CN  | - Hoàn thiện bài **Proposal cho Project nhóm** <br> - Viết **nhật ký công việc tuần 5** <br> - Lên kế hoạch học tập tuần 6 | 12/10/2025   | 12/10/2025      | <https://cloudjourney.awsstudygroup.com/> |
+| 1   | - Học Module 05-01 - Shared Responsibility Model                                                                           | 06/10/2025   | 06/10/2025      | <https://cloudjourney.awsstudygroup.com/> |
+| 2   | - Học Module 05-02 - Amazon Identity and Access Management (IAM)                                                           | 07/10/2025   | 07/10/2025      | <https://cloudjourney.awsstudygroup.com/> |
+| 3   | - Học Module 05-03 - Amazon Cognito <br> - Học Module 05-04 - AWS Organization                                             | 08/10/2025   | 08/10/2025      | <https://cloudjourney.awsstudygroup.com/> |
+| 4   | - Học Module 05-05 - AWS Identity Center <br> - Học Module 05-06 - Amazon Key Management Service (KMS)                     | 09/10/2025   | 09/10/2025      | <https://cloudjourney.awsstudygroup.com/> |
+| 5   | - Học Module 05-07 - AWS Security Hub <br> - Học Module 05-08 - Hands-on & Additional Research                             | 10/10/2025   | 10/10/2025      | <https://cloudjourney.awsstudygroup.com/> |
+| 6   | - Thực hành các bài lab liên quan của tuần 5                                                                               | 11/10/2025   | 11/10/2025      | <https://cloudjourney.awsstudygroup.com/> |
+| 7   | - Hoàn thiện bài **Proposal cho Project nhóm** <br> - Viết **nhật ký công việc tuần 5** <br> - Lên kế hoạch học tập tuần 6 | 12/10/2025   | 12/10/2025      | <https://cloudjourney.awsstudygroup.com/> |
 
 ---
 

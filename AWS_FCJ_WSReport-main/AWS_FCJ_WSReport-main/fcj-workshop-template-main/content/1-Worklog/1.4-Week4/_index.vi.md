@@ -16,13 +16,13 @@ pre: " <b> 1.4. </b> "
 
 | Thứ | Công việc                                                                                         | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu                            |
 | --- | ------------------------------------------------------------------------------------------------- | ------------ | --------------- | ----------------------------------------- |
-| 2   | - Học Module 04-01 - Dịch Vụ Lưu Trữ Trên AWS                                                     | 29/09/2025   | 29/09/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 3   | - Học Module 04-02 - Amazon S3: Access Point, Storage Class                                       | 30/09/2025   | 30/09/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Học Module 04-03 - S3 Static Website & CORS, Control Access, Object Key & Performance, Glacier  | 01/09/2025   | 01/09/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Học Module 04-04 - Snow Family, Storage Gateway, Backup                                         | 02/09/2025   | 02/09/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - Thực hành các bài lab liên quan đến Module 04-01 ~ 04-04                                        | 03/09/2025   | 03/09/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 7   | - Thực hành lab tiếp tục <br> - Dịch 1 bài blog liên quan                                         | 04/09/2025   | 04/09/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| CN  | - Dịch 2 bài blog còn lại <br> - Viết nhật ký công việc tuần 4 <br> - Lên kế hoạch học tập tuần 5 | 05/09/2025   | 05/09/2025      | <https://cloudjourney.awsstudygroup.com/> |
+| 1   | - Học Module 04-01 - Dịch Vụ Lưu Trữ Trên AWS                                                     | 29/09/2025   | 29/09/2025      | <https://cloudjourney.awsstudygroup.com/> |
+| 2   | - Học Module 04-02 - Amazon S3: Access Point, Storage Class                                       | 30/09/2025   | 30/09/2025      | <https://cloudjourney.awsstudygroup.com/> |
+| 3   | - Học Module 04-03 - S3 Static Website & CORS, Control Access, Object Key & Performance, Glacier  | 01/09/2025   | 01/09/2025      | <https://cloudjourney.awsstudygroup.com/> |
+| 4   | - Học Module 04-04 - Snow Family, Storage Gateway, Backup                                         | 02/09/2025   | 02/09/2025      | <https://cloudjourney.awsstudygroup.com/> |
+| 5   | - Thực hành các bài lab liên quan đến Module 04-01 ~ 04-04                                        | 03/09/2025   | 03/09/2025      | <https://cloudjourney.awsstudygroup.com/> |
+| 6   | - Thực hành lab tiếp tục <br> - Dịch 1 bài blog liên quan                                         | 04/09/2025   | 04/09/2025      | <https://cloudjourney.awsstudygroup.com/> |
+| 7   | - Dịch 2 bài blog còn lại <br> - Viết nhật ký công việc tuần 4 <br> - Lên kế hoạch học tập tuần 5 | 05/09/2025   | 05/09/2025      | <https://cloudjourney.awsstudygroup.com/> |
 
 ### Kết quả đạt được tuần 4:
 
