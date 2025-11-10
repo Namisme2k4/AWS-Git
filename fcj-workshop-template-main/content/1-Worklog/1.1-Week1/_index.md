@@ -8,30 +8,24 @@ pre: " <b> 1.1. </b> "
 
 ### Week 1 Objectives:
 
-- Connect and get acquainted with members of First Cloud Journey.
-- Understand basic Cloud computing and AWS service
-- Learn basic Linux
+- Connect and get to know members in the First Cloud Journey program.  
+- Understand basic AWS services and learn how to use the Console and CLI.
 
 ### Tasks to be carried out this week:
 
-| Day | Task                                                                                                                            | Start Date | Completion Date | Reference Material                                                                             |
-| --- | ------------------------------------------------------------------------------------------------------------------------------- | ---------- | --------------- | ---------------------------------------------------------------------------------------------- |
-| 1   | - Get acquainted with FCJ members <br> - Study Module 01-01: What is Cloud Computing?                                           | 08/11/2025 | 08/11/2025      | <https://www.youtube.com/watch?v=AQlsd0nWdZk&list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i&index=1/> |
-| 2   | - Study Module 01-02: What Makes AWS Different?<br> - Understand AWS Regions, Availability Zones, core services (EC2, S3, RDS). | 08/12/2025 | 08/12/2025      | <https://www.youtube.com/watch?v=AQlsd0nWdZk&list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i&index=1/> |
-| 3   | - Study Module 01-03: How to Start Your Cloud Journey. <br> - Learn about AWS Free Tier, AWS Console, and AWS CLI. <br>         | 08/13/2025 | 08/13/2025      | <https://www.youtube.com/watch?v=AQlsd0nWdZk&list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i&index=1/> |
-| 4   | - Do Lab 01-01: Create an AWS account. <br> - Configure billing settings, check Free Tier status.                               | 08/14/2025 | 08/15/2025      | <https://www.youtube.com/watch?v=AQlsd0nWdZk&list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i&index=1>  |
-| 5   | - Do Lab 01-02: Setup with Virtual MFA Device <br> - Learn what MFA is and why it’s important.                                  | 08/15/2025 | 08/15/2025      | <https://www.youtube.com/watch?v=AQlsd0nWdZk&list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i&index=1/> |
-| 6   | - Do Lab 01-03: Create admin group and admin user. <br> - Explain the difference between the root account and IAM users         | 08/15/2025 | 08/15/2025      | <https://www.youtube.com/watch?v=AQlsd0nWdZk&list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i&index=1/> |
-| 7   | - Write Worklog Week 1 <br> - Schedules tasks for week 2 <br> - Start brainstorming ideas for the Project Proposal              | 08/15/2025 | 08/15/2025      | <https://www.youtube.com/watch?v=AQlsd0nWdZk&list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i&index=1/> |
+| Day | Task                                                                                                                                                                               | Start Date | End Date  | Reference Source                                                                                              |
+| --- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- | ---------- | -------------------------------------------------------------------------------------------------------------- |
+| 1   | - Get to know FCJ members and new team members. <br> - Read and note internal policies and regulations at the internship unit. <br> - Lesson 01-01: What is Cloud Computing?        | 08/09/2025  | 08/09/2025 | <https://policies.fcjuni.com/1-regulations/>                                                                   |
+| 2   | - Lesson 01-02: What makes AWS different? <br> - Learn about AWS Regions, Availability Zones, and core services (EC2, S3, RDS).                                                    | 09/09/2025  | 09/09/2025 | <https://www.youtube.com/watch?v=AQlsd0nWdZk&list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i&ab_channel=AWSStudyGroup> |
+| 3   | - Lesson 01-03: How to start your cloud journey. <br> - Learn about AWS Free Tier, AWS Console, and AWS CLI.                                                                       | 10/09/2025  | 10/09/2025 | <https://www.youtube.com/watch?v=AQlsd0nWdZk&list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i&ab_channel=AWSStudyGroup> |
+| 4   | - **Practice 01-01:**<br> - Create an AWS account. <br> - Configure billing settings and check Free Tier status.                                                                    | 11/09/2025  | 11/09/2025 | <https://www.youtube.com/watch?v=AQlsd0nWdZk&list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i&ab_channel=AWSStudyGroup> |
+| 5   | - **Practice 01-02:**<br> - Set up Virtual MFA device. <br> - Learn what MFA is and why it’s important.                                                                            | 12/09/2025  | 12/09/2025 | <https://www.youtube.com/watch?v=AQlsd0nWdZk&list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i&ab_channel=AWSStudyGroup> |
+| 6   | - **Practice 01-03:**<br> - Create an admin group and admin user. <br> - Explain the difference between the root account and IAM users.                                            | 13/09/2025  | 13/09/2025 | <https://www.youtube.com/watch?v=AQlsd0nWdZk&list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i&ab_channel=AWSStudyGroup> |
+| 7   | - Write the Week 1 Worklog. <br> - Schedule tasks for Week 2. <br> - Start brainstorming ideas for the Project Proposal.                                                           | 14/09/2025  | 14/09/2025 | <https://www.youtube.com/watch?v=AQlsd0nWdZk&list=PLahN4TLWtox2a3vElknwzU_urND8hLn1i&ab_channel=AWSStudyGroup> |
+
+---
 
 ### Week 1 Achievements:
 
-- Get to know the members of FCJ
-- Created a Free tier AWS account
-
-### Week 1 Reflections:
-
-- [Week 1 Objectives:](#week-1-objectives)
-- [Tasks to be carried out this week:](#tasks-to-be-carried-out-this-week)
-- [Week 1 Achievements:](#week-1-achievements)
-- [Week 1 Reflections:](#week-1-reflections)
+- Connected with FCJ members.  
+- Successfully created an AWS Free Tier account.

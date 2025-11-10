@@ -17,12 +17,12 @@ pre: " <b> 1.3. </b> "
 
 | Day | Task                                                                                                                          | Start Date | Completion Date | Reference Material                        |
 | --- | ----------------------------------------------------------------------------------------------------------------------------- | ---------- | --------------- | ----------------------------------------- |
-| 1   | - Theory: <br>&emsp; + Module 02-01: AWS Virtual Private Cloud <br>&emsp; + Module 02-02: VPC Security and Multi-VPC features | 09/22/2025 | 09/22/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 2   | - Practice: Module 02-Lab03-01 (Start with Amazon VPC Introduction)                                                           | 09/23/2025 | 09/23/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 3   | - Practice: Module 02-Lab03-01.1 to 01.4 (Create Subnets, Route Table, IGW, NAT Gateway)                                      | 09/24/2025 | 09/24/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Practice: Module 02-Lab03-02.1 to 02.3 (Configure Security Groups, NACLs, VPC Resource Map)                                 | 09/25/2025 | 09/25/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Draw the created VPC diagram <br>- Take notes on networking concepts <br>                                                   | 09/26/2025 | 09/26/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - Review and finalize Week 3 Worklog                                                                                          | 09/27/2025 | 09/27/2025      | <https://cloudjourney.awsstudygroup.com/> |
+| 1   | - Theory: <br>&emsp; + Module 02-01: AWS Virtual Private Cloud <br>&emsp; + Module 02-02: VPC Security and Multi-VPC features | 22/09/2025 | 22/09/2025     | <https://cloudjourney.awsstudygroup.com/> |
+| 2   | - Practice: Module 02-Lab03-01 (Start with Amazon VPC Introduction)                                                           | 23/09/2025 | 23/09/2025      | <https://cloudjourney.awsstudygroup.com/> |
+| 3   | - Practice: Module 02-Lab03-01.1 to 01.4 (Create Subnets, Route Table, IGW, NAT Gateway)                                      | 24/09/2025 | 24/09/2025      | <https://cloudjourney.awsstudygroup.com/> |
+| 4   | - Practice: Module 02-Lab03-02.1 to 02.3 (Configure Security Groups, NACLs, VPC Resource Map)                                 | 25/09/2025 | 25/09/2025      | <https://cloudjourney.awsstudygroup.com/> |
+| 5   | - Draw the created VPC diagram <br>- Take notes on networking concepts <br>                                                   | 26/09/2025 | 26/09/2025     | <https://cloudjourney.awsstudygroup.com/> |
+| 6   | - Review and finalize Week 3 Worklog          | 27/09/2025 | 27/09/2025      | <https://cloudjourney.awsstudygroup.com/> |
 
 ### Week 3 Achievements:
 
