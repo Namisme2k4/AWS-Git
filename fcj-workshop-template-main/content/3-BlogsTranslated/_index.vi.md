@@ -6,28 +6,56 @@ chapter: false
 pre: " <b> 3. </b> "
 ---
 
-### [Blog 1 - AWS AI Agents Production-Ready at Scale](3.1-Blog1/)
+Mục này giới thiệu các bài blog đã dịch về những công nghệ và dịch vụ AWS mới nhất.
 
-Blog này giới thiệu cách giúp khách hàng triển khai AI agent sẵn sàng sản xuất ở quy mô lớn. Họ đưa ra 4 nguyên tắc: linh hoạt (dễ tích hợp nhiều mô hình/dữ liệu), củng cố nền tảng (bảo mật, quan sát, tích hợp), tận dụng dữ liệu và mô hình phù hợp, và tạo ra giá trị chuyển đổi thực sự.
+---
 
-Các dịch vụ mới gồm: Amazon Bedrock AgentCore (runtime serverless an toàn, mở rộng), Nova trong SageMaker (tùy chỉnh mô hình linh hoạt), Nova Act SDK (tự động hóa tác vụ web), S3 Vectors (lưu trữ vector chi phí thấp, hiệu quả cao), cùng Marketplace với nhiều agent có sẵn.
+## 📚 Các Bài Blog Nổi Bật
 
-### [Blog 2 - Optimizing metrics ingestion with Amazon Managed Service for Prometheus](3.2-Blog2/)
+### [Blog 1 - Amazon ECS công bố hỗ trợ chế độ chỉ IPv6 (IPv6-only)](3.1-Blog1/)
 
-Amazon Managed Service for Prometheus (AMP) giúp tối ưu việc thu thập metrics ở quy mô lớn. Bài viết nhấn mạnh việc giám sát các chỉ số chính (IngestionRate, ActiveSeries…), thiết lập hạn mức theo label set để ngăn một ứng dụng gây quá tải hệ thống, và cấu hình quota qua console/CLI. Các CloudWatch metrics mới như ActiveSeriesPerLabelSet, IngestionRatePerLabelSet hỗ trợ theo dõi chi tiết. Nhờ đó, tổ chức có thể kiểm soát chi phí, ưu tiên metrics quan trọng và duy trì hệ thống ổn định.
+Bài viết này khám phá cách **Amazon ECS** giờ đây hỗ trợ **chế độ chỉ IPv6**, cho phép các tổ chức vận hành workload container hoàn toàn trong không gian địa chỉ IPv6 mà không phụ thuộc vào IPv4.
 
-### [Blog 3 - Simplifying Log Management using Amazon CloudWatch Logs Centralization](3.3-Blog3/)
+**Điểm nổi bật chính:**
+- Loại bỏ chi phí NAT Gateway và đơn giản hóa quản lý mạng
+- Giải quyết vấn đề thiếu địa chỉ IPv4 cho các hệ thống quy mô lớn
+- Tích hợp đầy đủ với các dịch vụ AWS (ECR, CloudWatch, Secrets Manager)
+- Hỗ trợ NAT64/DNS64 để kết nối với các endpoint chỉ IPv4
+- Lý tưởng cho chính phủ, viễn thông, tài chính và các môi trường yêu cầu tuân thủ IPv6
 
-Amazon Managed Service for Prometheus (AMP) giúp doanh nghiệp tối ưu ingestion metrics khi hệ thống quan sát mở rộng. Bài viết nêu bốn nguyên tắc: (1) tập trung hóa quan sát qua workspace trung tâm, (2) giám sát quota và mức sử dụng bằng CloudWatch, (3) giới hạn active series theo nhãn để ngăn workload gây ồn, và (4) quản trị chi tiết theo tập nhãn. AMP cung cấp bộ thu thập được quản lý, tích hợp CloudWatch, và tính năng đặt giới hạn nhãn, giúp bảo vệ workload quan trọng, tối ưu chi phí, và duy trì hiệu năng ingestion ổn định. Khách hàng ghi nhận giảm rủi ro quá tải, tăng khả năng quản trị chi phí, và bảo vệ dịch vụ production khỏi workload thử nghiệm.
+**Tác giả:** Dumlu Timuralp & Olly Pomeroy (AWS)
 
-### [Blog 4 - ...](3.4-Blog4/)
+---
 
-Blog này giới thiệu cách bắt đầu xây dựng data lake trong lĩnh vực y tế bằng cách áp dụng kiến trúc microservices. Bạn sẽ tìm hiểu vì sao data lake quan trọng trong việc lưu trữ và phân tích dữ liệu y tế đa dạng (hồ sơ bệnh án điện tử, dữ liệu xét nghiệm, thiết bị IoT y tế…), cách microservices giúp hệ thống linh hoạt, dễ mở rộng và dễ bảo trì hơn. Bài viết cũng hướng dẫn các bước khởi tạo môi trường, tổ chức pipeline xử lý dữ liệu, và đảm bảo tuân thủ các tiêu chuẩn bảo mật & quyền riêng tư như HIPAA.
+### [Blog 2 - Claude Sonnet 4.5 ra mắt trên Amazon Bedrock](3.2-Blog2/)
 
-### [Blog 5 - ...](3.5-Blog5/)
+Bài viết này giới thiệu **Claude Sonnet 4.5**, mô hình tiên tiến nhất của Anthropic hiện đã sẵn có trên Amazon Bedrock, được tối ưu cho lập trình, agent phức tạp và tự động hóa doanh nghiệp.
 
-Blog này giới thiệu cách bắt đầu xây dựng data lake trong lĩnh vực y tế bằng cách áp dụng kiến trúc microservices. Bạn sẽ tìm hiểu vì sao data lake quan trọng trong việc lưu trữ và phân tích dữ liệu y tế đa dạng (hồ sơ bệnh án điện tử, dữ liệu xét nghiệm, thiết bị IoT y tế…), cách microservices giúp hệ thống linh hoạt, dễ mở rộng và dễ bảo trì hơn. Bài viết cũng hướng dẫn các bước khởi tạo môi trường, tổ chức pipeline xử lý dữ liệu, và đảm bảo tuân thủ các tiêu chuẩn bảo mật & quyền riêng tư như HIPAA.
+**Điểm nổi bật chính:**
+- Khả năng lập trình nâng cao: refactor code, phân tích logic, tự động hóa CI/CD
+- Hỗ trợ các tác vụ dài hạn duy trì ngữ cảnh qua nhiều giờ hoặc nhiều ngày
+- Quản lý ngữ cảnh và bộ nhớ thông minh với cửa sổ ngữ cảnh tích ứng
+- Tích hợp sâu với Amazon Bedrock AgentCore để xây dựng agent tinh vi
+- Bộ nhớ liên phiên cho các trợ lý AI doanh nghiệp
+- Ứng dụng trong an niên mạng, tài chính, nghiên cứu và tối ưu hóa kinh doanh
 
-### [Blog 6 - ...](3.6-Blog6/)
+**Tác giả:** Matheus Guimaraes (@codingmatheus)
 
-Blog này giới thiệu cách bắt đầu xây dựng data lake trong lĩnh vực y tế bằng cách áp dụng kiến trúc microservices. Bạn sẽ tìm hiểu vì sao data lake quan trọng trong việc lưu trữ và phân tích dữ liệu y tế đa dạng (hồ sơ bệnh án điện tử, dữ liệu xét nghiệm, thiết bị IoT y tế…), cách microservices giúp hệ thống linh hoạt, dễ mở rộng và dễ bảo trì hơn. Bài viết cũng hướng dẫn các bước khởi tạo môi trường, tổ chức pipeline xử lý dữ liệu, và đảm bảo tuân thủ các tiêu chuẩn bảo mật & quyền riêng tư như HIPAA.
+---
+
+### [Blog 3 - Đo lường độ chính xác khi so khớp theo quy tắc hoặc máy học trong AWS Entity Resolution](3.3-Blog3/)
+
+Bài viết này cung cấp hướng dẫn về **đo lường độ chính xác của việc so khớp** khi xây dựng hệ thống làm sạch dữ liệu và hợp nhất bản ghi bằng AWS Entity Resolution.
+
+**Điểm nổi bật chính:**
+- Thiết lập khung đánh giá khách quan bằng cách sử dụng ground truth set
+- So sánh phương pháp rule-based và ML-based một cách khách quan
+- Tính toán các chỉ số precision, recall và F1-score
+- Sử dụng dataset mở BPID để kiểm tra mà không cần dữ liệu nhạy cảm
+- Đặt ngưỡng độ chính xác phù hợp với ngành (ưu tiên precision cho tài chính, recall cho marketing)
+- Xây dựng ground truth set nội bộ và triển khai chiến lược kiểm thử song song
+
+**Tác giả:** Travis Barnes & Yefan Tao (AWS Entity Resolution)
+
+---
+

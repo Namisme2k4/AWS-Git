@@ -15,7 +15,7 @@ chapter: false
 
 &emsp; **Email:** namdhse180349@fpt.edu.vn
 
-&emsp; **Trường:** Đại học FPTFPT
+&emsp; **Trường:** Đại học FPT
 
 &emsp; **Ngành:** Kỹ Sư Phần MềmMềm
 

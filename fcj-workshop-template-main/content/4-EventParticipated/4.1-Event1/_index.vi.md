@@ -87,8 +87,7 @@ Sự kiện mang đến **kiến thức, xu hướng và công cụ mới nhất
 
 ### Hình ảnh sự kiện
 
-![Ảnh đại diện của bạn](/images/4-EventPaticipated/EV1.jpg)
-![Vietnam Cloud Day 2025 HCMC 2](/images/4-EventPaticipated/EV2.jpg)
+![Vietnam Cloud Day 2025 HCMC 2](/images/4-EventPaticipated/EV4.jpg)
 
 ---
 
