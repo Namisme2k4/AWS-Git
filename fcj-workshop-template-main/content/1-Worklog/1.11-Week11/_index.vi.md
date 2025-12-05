@@ -15,9 +15,9 @@ pre: " <b> 1.11. </b> "
 ## Công việc trong Tuần
 | Ngày | Công việc | Ngày bắt đầu | Ngày hoàn thành | Tài liệu tham khảo |
 |------|-----------|--------------|------------------|---------------------|
-| 1 | Thiết kế UI/UX – Phiên bản 1 bằng Figma. | 17/11/2025 | 17/11/2025 | |
-| 2 | Thiết kế UI/UX – Phiên bản 2 bằng Figma. | 18/11/2025 | 18/11/2025 | |
-| 3 | Thiết kế UI/UX – Phiên bản Hoàn chỉnh bằng Figma. | 19/11/2025 | 19/11/2025 | |
+| 1 | Thiết kế UI/UX – Phiên bản 1. | 17/11/2025 | 17/11/2025 | |
+| 2 | Thiết kế UI/UX – Phiên bản 2. | 18/11/2025 | 18/11/2025 | |
+| 3 | Thiết kế UI/UX – Phiên bản Hoàn chỉnh. | 19/11/2025 | 19/11/2025 | |
 | 4 | Viết mã giao diện cho ứng dụng web đo nồng độ cồn – Ngày 1. | 20/11/2025 | 20/11/2025 | |
 | 5 | Viết mã giao diện cho ứng dụng web đo nồng độ cồn – Ngày 2. | 21/11/2025 | 21/11/2025 | |
 
