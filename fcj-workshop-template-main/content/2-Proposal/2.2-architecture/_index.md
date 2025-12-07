@@ -11,7 +11,7 @@ pre: " <b> 2.2 </b> "
 ## 2.1 High-Level Architecture Diagram
 The solution leverages a **Cloud-Native Serverless Architecture** ensuring high scalability, low maintenance, and cost-efficiency. The system connects Edge IoT devices to a centralized AWS backend, protected by comprehensive security layers.
 
-![AWS serverless architecture diagram](/images/2-Proposal/AWS_V13.drawio.png)
+![AWS serverless architecture diagram](/images/2-Proposal/Arch.jpg)
 
 
 **Core Architectural Layers:**

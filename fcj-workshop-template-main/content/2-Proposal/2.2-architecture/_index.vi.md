@@ -11,7 +11,7 @@ pre: " <b> 2.2 </b> "
 ## 2.1 Sơ Đồ Kiến Trúc Tổng Quan
 Giải pháp sử dụng **Kiến trúc Cloud-Native Serverless** nhằm đảm bảo khả năng mở rộng cao, ít bảo trì và tiết kiệm chi phí. Hệ thống kết nối các thiết bị IoT ở Edge với backend AWS trung tâm, đi kèm nhiều lớp bảo mật toàn diện.
 
-![Sơ đồ kiến trúc serverless AWS](/images/2-Proposal/AWS_V13.drawio.png)
+![Sơ đồ kiến trúc serverless AWS](/images/2-Proposal/Arch.jpg)
 
 **Các lớp kiến trúc chính:**
 1. **Edge Layer:** ESP32 giao tiếp với các cảm biến sinh trắc học và môi trường.
